@@ -32,3 +32,6 @@ yarn-error.log*
 # local agent and editor settings
 .claude/
 .vscode/
+
+# pnpm auto-generated build-approval stub (not a monorepo)
+pnpm-workspace.yaml
