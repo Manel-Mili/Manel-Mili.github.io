@@ -121,19 +121,6 @@ En 2025, elle a effectué un stage de recherche au laboratoire U2IS de l'ENSTA P
                   rounded="lg"
                   shadow="md"
                 />
-                <Link
-                  href={withBase("/manel-mili.webp")}
-                  download="Manel_Mili.webp"
-                  target="_blank"
-                  display="block"
-                  mt={2}
-                  textAlign="center"
-                  fontSize="xs"
-                  color="blue.600"
-                  _hover={{ textDecoration: "underline" }}
-                >
-                  &#8595; Download photo
-                </Link>
               </Box>
             </VStack>
           </Box>

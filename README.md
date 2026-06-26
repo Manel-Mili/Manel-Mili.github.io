@@ -36,25 +36,15 @@ pnpm build        # static export to ./out
 
 The site builds to a static `out/` folder and deploys automatically.
 
-This project is configured for a GitHub Pages project site served from a sub-path. The base path is set to `/manel-mili` via the `NEXT_PUBLIC_BASE_PATH` environment variable in `.github/workflows/deploy.yml`.
+This project is configured for a GitHub Pages user page served from the domain root.
 
-1. Push this project to the `main` branch of a repository named `manel-mili`.
+1. Push this project to the `main` branch of a repository named `Manel-Mili.github.io`.
 2. In the repository, go to Settings > Pages and set Source to "GitHub Actions".
 3. The included workflow builds and publishes on every push to `main`.
 
-The site will be live at `https://<owner>.github.io/manel-mili/`.
+The site is live at `https://manel-mili.github.io`.
 
-To deploy under a different path, change `NEXT_PUBLIC_BASE_PATH` in the workflow to `/<repo-name>`. For a user page (`<username>.github.io`, served from the domain root) or a custom domain, set `NEXT_PUBLIC_BASE_PATH` to an empty string.
-
-Local development uses no base path, so `pnpm dev` serves from the root.
-
-## After deploying
-
-Update the placeholder domain `https://example.com` with the real URL in:
-
-- `app/layout.tsx` (metadataBase, openGraph url, JSON-LD url and image)
-- `app/robots.ts`
-- `app/sitemap.ts`
+To deploy under a sub-path instead (a project repo like `username.github.io/portfolio`), set `NEXT_PUBLIC_BASE_PATH` to `/portfolio` in `.github/workflows/deploy.yml`. Local development always uses no base path.
 
 ## Credits
 

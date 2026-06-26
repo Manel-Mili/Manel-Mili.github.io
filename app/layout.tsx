@@ -9,26 +9,26 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL("https://manel-mili.github.io"),
   title: {
     default: "Manel Mili - Medical AI Researcher",
     template: "%s | Manel Mili",
   },
-  description: "Manel Mili is a Ph.D. researcher in medical AI at LabTIM, University of Monastir. Research in deep learning and explainable AI for medical image analysis.",
+  description: "Manel Mili is a Ph.D. researcher in medical AI at LTIM, University of Monastir. Research in deep learning and explainable AI for medical image analysis.",
   authors: [{ name: "Manel Mili" }],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "Manel Mili",
     title: "Manel Mili - Medical AI Researcher",
-    description: "Ph.D. researcher in medical AI at LabTIM, University of Monastir. Deep learning and explainable AI for medical image analysis.",
-    url: "https://example.com",
+    description: "Ph.D. researcher in medical AI at LTIM, University of Monastir. Deep learning and explainable AI for medical image analysis.",
+    url: "https://manel-mili.github.io",
     locale: "en_US",
   },
   twitter: {
     card: "summary",
     title: "Manel Mili - Medical AI Researcher",
-    description: "Ph.D. researcher in medical AI at LabTIM, University of Monastir.",
+    description: "Ph.D. researcher in medical AI at LTIM, University of Monastir.",
   },
   manifest: "/site.webmanifest",
   icons: {
@@ -71,11 +71,11 @@ export default function RootLayout({
               },
               affiliation: {
                 "@type": "Organization",
-                name: "LabTIM Research Laboratory, University of Monastir",
+                name: "Laboratory of Medical Technologies and Imaging (LTIM), University of Monastir",
               },
-              url: "https://example.com",
+              url: "https://manel-mili.github.io",
               email: "manel.mili@isimm.u-monastir.tn",
-              image: "https://example.com/manel-mili.webp",
+              image: "https://manel-mili.github.io/manel-mili.webp",
               sameAs: [
                 "https://scholar.google.com/citations?user=-kB49IMAAAAJ",
                 "https://www.linkedin.com/in/manel-mili-574b76414/",
