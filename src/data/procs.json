@@ -1,0 +1,52 @@
+{
+  "title": "Conference Papers",
+  "items": [
+    {
+      "title": "Weakly Supervised ViT-Conditioned Text Explanations in Glioma Histology",
+      "authors": "Mili, M., Ben Abdeljelil, A., Ben Abdallah, A., and Bedoui, M. H.",
+      "venue": "International Joint Conference on Neural Networks (IJCNN 2026)",
+      "year": "2026"
+    },
+    {
+      "title": "NdLinear-Attention Based Deep Learning Model for MGMT Promoter Methylation Prediction in Glioblastoma",
+      "authors": "Mili, M., Ben Abdallah, A., and Bedoui, M. H.",
+      "venue": "International Conference on Control, Decision and Information Technologies (CoDIT 2026)",
+      "note": "Accepted",
+      "year": "2026"
+    },
+    {
+      "title": "Quantitatively Audited Multi-View XAI for Medical Image Classification: Application to MGMT Promoter Methylation",
+      "authors": "Mili, M., Ben Abdeljelil, A., Manzanera, A., Ben Abdallah, A., Otero, J. J., and Bedoui, M. H.",
+      "venue": "International Conference on Agents and Artificial Intelligence (ICAART 2026)",
+      "year": "2026"
+    },
+    {
+      "title": "Feature Extraction through MS Lesion and Cerebral Lobe Segmentation for Enhanced EDSS Prediction",
+      "authors": "Messaoud, N. H., Zina, N., Mili, M., Dhia, R. B., Abdallah, A. B., and Bedoui, M. H.",
+      "venue": "International Symposium on iNnovative Informatics of Biskra (ISNIB 2025)",
+      "pages": "1-6",
+      "note": "IEEE",
+      "year": "2025"
+    },
+    {
+      "title": "Approche ensembliste pour la prédiction du statut MGMT chez les patients atteints de GBM",
+      "authors": "Mili, M., Abdallah, A. B., Kerkeni, A., Otero, J. J., and Bedoui, M. H.",
+      "venue": "Applications Médicales de l'Informatique: Nouvelles Approches (AMINA 2024)",
+      "year": "2024"
+    },
+    {
+      "title": "Revolutionizing Brain Cancer Diagnosis: Automated Prediction of MGMT Methylation Status using Histological Images",
+      "authors": "Mili, M., Abdallah, A. B., Otero, J. J., Kerkeni, A., and Bedoui, M. H.",
+      "venue": "International Conference on Cyberworlds (CW 2023)",
+      "pages": "149-156",
+      "note": "IEEE",
+      "year": "2023"
+    },
+    {
+      "title": "Gradient Boosting for Predicting MGMT Status in Gliomas",
+      "authors": "Mili, M., Kerkeni, A., Abdallah, A. B., Otero, J. J., and Bedoui, M. H.",
+      "venue": "Applications of Medical Informatics: New Approaches (AMINA 2022)",
+      "year": "2022"
+    }
+  ]
+}

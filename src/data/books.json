@@ -1,0 +1,13 @@
+{
+  "title": "Book Chapters",
+  "items": [
+    {
+      "title": "ICU Mortality Prediction Using Long Short-Term Memory Networks",
+      "authors": "Mili, M., Kerkeni, A., Ben Abdallah, A., and Bedoui, M. H.",
+      "venue": "International Conference on Intelligent Data Engineering and Automated Learning (IDEAL 2022)",
+      "pages": "242-251",
+      "note": "Springer",
+      "year": "2022"
+    }
+  ]
+}

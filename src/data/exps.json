@@ -1,0 +1,34 @@
+{
+  "title": "Experience",
+  "items": [
+    {
+      "institution": "ENSTA Paris, Polytechnic Institute of Paris, France",
+      "instshort": "ENSTA Paris, France",
+      "details": [
+        "Research Intern, U2IS Laboratory, Sep 2025 – Dec 2025",
+        "Topic: Mechanistic interpretability applied to multimodal data for MGMT status prediction"
+      ]
+    },
+    {
+      "institution": "Higher Institute of Informatics and Mathematics of Monastir (ISIMM), Tunisia",
+      "instshort": "ISIMM, Monastir, Tunisia",
+      "details": [
+        "Contract Lecturer, 2024 – 2025",
+        "Lab sessions: Cloud & Virtualization (Software Engineering, L3)",
+        "Lab sessions: Mobile Development (Software Engineering, L3)"
+      ]
+    },
+    {
+      "institution": "Faculty of Sciences of Monastir (FSM), Tunisia",
+      "instshort": "Faculty of Sciences of Monastir, Tunisia",
+      "details": [
+        "Contract Lecturer, 2023 – 2024",
+        "Lab sessions: SOA Architecture and Web Services (Software Engineering & Information Systems, L3)",
+        "Lab sessions: Database Management Systems (Software Engineering & Information Systems, L2)",
+        "Adjunct Lecturer, 2021 – 2023",
+        "Lectures & tutorials: Introduction to Data Science (Mathematics, L1 and L3)",
+        "Lectures & tutorials: Statistical Programming with R (Mathematics, L1)"
+      ]
+    }
+  ]
+}

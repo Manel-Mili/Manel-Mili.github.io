@@ -1,0 +1,38 @@
+{
+  "title": "Education",
+  "items": [
+    {
+      "institution": "Faculty of Sciences of Monastir (FSM), University of Monastir, Tunisia",
+      "instshort": "Faculty of Sciences of Monastir, Tunisia",
+      "details": [
+        "Ph.D. in Computer Science, 2021 – Present",
+        "Thesis: Prediction of MGMT Status in Gliomas Using Artificial Intelligence",
+        "Laboratory of Medical Technologies and Imaging (LTIM, LR12ES06)"
+      ]
+    },
+    {
+      "institution": "Higher Institute of Informatics and Mathematics of Monastir (ISIMM), Tunisia",
+      "instshort": "ISIMM, Monastir, Tunisia",
+      "details": [
+        "Master's Degree in Software Engineering, 2017 – 2020",
+        "Project: Early Mortality Prediction in Intensive Care Units (ICUs) using Deep Learning Models",
+        "Laboratory of Medical Technologies and Imaging (LTIM, LR12ES06)"
+      ]
+    },
+    {
+      "institution": "Higher Institute of Informatics and Mathematics of Monastir (ISIMM), Tunisia",
+      "instshort": "ISIMM, Monastir, Tunisia",
+      "details": [
+        "Bachelor's Degree in Computer Science, 2012 – 2015",
+        "Project: Distributed Optimization by Particle Testing: Case of MaxCSP"
+      ]
+    },
+    {
+      "institution": "Lycée de Jammel, Monastir, Tunisia",
+      "instshort": "Lycée de Jammel, Tunisia",
+      "details": [
+        "Baccalaureate in Experimental Sciences, 2008 – 2012"
+      ]
+    }
+  ]
+}

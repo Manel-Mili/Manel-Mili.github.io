@@ -1,0 +1,33 @@
+{
+  "title": "Selected Projects",
+  "items": [
+    {
+      "institution": "MGMT Methylation Prediction for GBM Patients",
+      "details": [
+        "Prediction of MGMT promoter methylation status for glioblastoma patients from medical and histological images.",
+        "Tools: Medical Imaging, Image Processing, Deep Learning, Computer Vision, Data Fusion, Keras, TensorFlow"
+      ]
+    },
+    {
+      "institution": "Web Interface for MGMT Promoter Status Prediction",
+      "details": [
+        "Web application that predicts MGMT promoter status from uploaded histological images, with a deep learning backend.",
+        "Tools: HTML, CSS, JavaScript, Flask, Ngrok"
+      ]
+    },
+    {
+      "institution": "ICU Mortality Prediction",
+      "details": [
+        "Early mortality prediction in intensive care units using deep learning on electronic medical records.",
+        "Tools: Predictive Analytics, Big Data, Deep Learning, Azure, Data Classification"
+      ]
+    },
+    {
+      "institution": "Clinical Outcome Prediction Models",
+      "details": [
+        "Predictive models for Alzheimer's disease, depression, liver cancer, megaloblastic anemia, drug sensitivity, adverse drug reactions, frequent exacerbators, and nosocomial infections.",
+        "Tools: Python, Keras, TensorFlow, Scikit-learn, Statistical Data Analysis"
+      ]
+    }
+  ]
+}

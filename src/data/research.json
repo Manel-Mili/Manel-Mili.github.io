@@ -1,0 +1,24 @@
+{
+  "title": "Research Interests",
+  "items": [
+    {
+      "institution": "Focus",
+      "details": [
+        "Artificial Intelligence and Computer Vision for medical image processing",
+        "Predictive modeling, classification, and data mining",
+        "Deep learning, machine learning, and data visualization"
+      ]
+    },
+    {
+      "institution": "Application Areas",
+      "details": [
+        "MGMT status prediction in gliomas and glioblastoma (histology and imaging)",
+        "Explainable AI (XAI) and mechanistic interpretability for clinical models",
+        "Cardiac MRI classification and cardiac fluid hemodynamics",
+        "Multiple sclerosis lesion and cerebral lobe segmentation",
+        "ICU mortality prediction and clinical outcome modeling",
+        "Nuclear medicine and oncology imaging"
+      ]
+    }
+  ]
+}

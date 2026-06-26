@@ -1,0 +1,29 @@
+{
+  "title": "Academic Service",
+  "items": [
+    {
+      "institution": "Session Chair",
+      "details": [
+        "IEEE World Congress on Computational Intelligence (WCCI 2026), Maastricht — Special Session SS10: Trustworthy and Explainable Federated Learning. Moderated presentations and Q&A discussions."
+      ]
+    },
+    {
+      "institution": "Technical Reviewer",
+      "details": [
+        "Computers in Biology and Medicine (CIBM), 2024",
+        "Journal of Machine Learning Research (JMLR), 2024",
+        "Applications of Medical Informatics: New Approaches (AMINA), 2022",
+        "International Conference on Machine Learning and Applications (ICMLA), 2021"
+      ]
+    },
+    {
+      "institution": "Organization & Outreach",
+      "details": [
+        "Co-organizer, National Workshop on Applications of Medical Informatics: New Approaches (AMINA), 2022 and 2026, LTIM",
+        "Co-organizer, 47th Congress of the Biomechanics Society, 2022, LTIM",
+        "Trainer, CEC-IA and Health program, 2022 and 2023, LTIM",
+        "Active member, Tunisian Association for the Promotion of Applied Research (ATUPRA), 2024"
+      ]
+    }
+  ]
+}

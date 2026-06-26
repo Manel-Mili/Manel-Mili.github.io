@@ -1,0 +1,45 @@
+{
+  "title": "Journal Articles",
+  "items": [
+    {
+      "title": "Hybrid Approach for Automatic Annotation and Displacement Estimation of Cardiac Fluid Hemodynamics",
+      "authors": "Kriker, O., Bouchahda, N., Mili, M., Sfar, R., Ben Abdallah, A., and Bedoui, M. H.",
+      "venue": "International Journal of Imaging Systems and Technology",
+      "year": "2026"
+    },
+    {
+      "title": "Machine learning models in predictive factors for megaloblastic character of macrocytic anemia",
+      "authors": "Kechida, M., Slama, N., Kenani, M., Mili, M., Salem, A., Krit, W., … and Bedoui, M. H.",
+      "venue": "Leukemia Research Reports",
+      "pages": "100568",
+      "year": "2026"
+    },
+    {
+      "title": "Deep Transfer Learning for Classification of Late Gadolinium Enhancement Cardiac MRI Images into Myocardial Infarction, Myocarditis, and Healthy Classes: Comparison with Subjective Visual Evaluation",
+      "authors": "Ben Khalifa, A., Mili, M., Maatouk, M., Ben Abdallah, A., Abdellali, M., Gaied, S., … and Zrig, A.",
+      "venue": "Diagnostics",
+      "volume": "15",
+      "number": "2",
+      "pages": "207",
+      "year": "2025"
+    },
+    {
+      "title": "Comparing efficacy and adherence of smartphone-guided exercises to conventional self-directed exercises for neck pain in office workers: A randomized controlled trial protocol",
+      "authors": "Salah, S., Jellad, A., Mili, M., Chaabeni, A., Bedoui, M. H., and Ben Saad, H.",
+      "venue": "PLoS One",
+      "volume": "20",
+      "number": "9",
+      "pages": "e0329863",
+      "year": "2025"
+    },
+    {
+      "title": "L'IA peut-elle surseoir à la réalisation d'une scintigraphie osseuse dans le bilan initial d'un cancer de la prostate?",
+      "authors": "Nouira, M., Yacoub, A., Abdallah, A. B., Mili, M., Boudriga, H., Hmida, W., … and Chatti, K.",
+      "venue": "Médecine Nucléaire",
+      "volume": "49",
+      "number": "2",
+      "pages": "128-129",
+      "year": "2025"
+    }
+  ]
+}

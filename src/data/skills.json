@@ -1,0 +1,36 @@
+{
+  "title": "Technical Skills",
+  "items": [
+    {
+      "institution": "AI & Machine Learning",
+      "details": [
+        "Deep Learning, Machine Learning, Predictive Modeling, Computer Vision",
+        "TensorFlow, Keras, PyTorch, Scikit-learn, Theano, Caffe, XGBoost, LightGBM, Fastai, Azure ML SDK"
+      ]
+    },
+    {
+      "institution": "Programming",
+      "details": [
+        "Python, Java, R, SQL, MATLAB, Ruby, XML/XSL, LaTeX"
+      ]
+    },
+    {
+      "institution": "Databases",
+      "details": [
+        "MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server, MongoDB, HBase, Elasticsearch"
+      ]
+    },
+    {
+      "institution": "Web Development",
+      "details": [
+        "HTML, CSS, JavaScript, Apache, Tomcat"
+      ]
+    },
+    {
+      "institution": "Languages",
+      "details": [
+        "English (TOEIC, 2019), French, Arabic — all fluent; basic Spanish"
+      ]
+    }
+  ]
+}
