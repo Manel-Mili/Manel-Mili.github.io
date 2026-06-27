@@ -21,7 +21,7 @@ export default function BioPage() {
   const [copiedEn, setCopiedEn] = useState(false);
   const [copiedFr, setCopiedFr] = useState(false);
 
-  const bioEnglish = `Manel Mili is a Ph.D. student at the Faculty of Sciences of Monastir and a member of the Laboratory of Medical Technologies and Imaging (LTIM, LR12ES06) at the Faculty of Medicine, University of Monastir, Tunisia. Her doctoral thesis addresses the prediction of MGMT status in gliomas using artificial intelligence.
+  const bioEnglish = `Manel Mili is a Ph.D. student at the Faculty of Sciences of Monastir and a member of the Laboratory of Medical Technologies and Imaging (LTIM-LR12ES06) at the Faculty of Medicine, University of Monastir, Tunisia. Her doctoral thesis addresses the prediction of MGMT status in gliomas using artificial intelligence.
 
 Her research focuses on artificial intelligence and computer vision applied to medical image processing. She specializes in predictive modeling, classification, and data mining, with strong expertise in deep learning, machine learning, and data visualization. Passionate about innovative problem-solving, she strives to advance methodologies that enhance decision-making and drive impactful results in research.
 
