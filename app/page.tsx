@@ -91,7 +91,7 @@ export default function Page() {
 }
 
 /* ════════════════════════════════════════════════════════
-   FILTER BAR — sticky, swipeable pill nav
+   FILTER BAR — sticky, swipeable pill nav with scroll cues
    ════════════════════════════════════════════════════════ */
 const FilterBar = ({
   stubs,
@@ -103,6 +103,32 @@ const FilterBar = ({
   onSelect: (s: string) => void;
 }) => {
   const tabs = ["all", ...stubs];
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  const update = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setEdges({
+      left: el.scrollLeft > 4,
+      right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4,
+    });
+  };
+
+  useEffect(() => {
+    update();
+    const el = scrollRef.current;
+    el?.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el?.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [tabs.length]);
+
+  const nudge = (dir: number) =>
+    scrollRef.current?.scrollBy({ left: dir * 200, behavior: "smooth" });
+
   return (
     <Box
       position="sticky"
@@ -110,48 +136,135 @@ const FilterBar = ({
       zIndex={5}
       mb={4}
       py={2}
-      bg="rgba(200,150,100,0.85)"
+      bg={{ base: "rgba(250,250,250,0.85)", _dark: "rgba(20,20,20,0.85)" }}
       backdropFilter="blur(8px)"
       borderRadius="xl"
     >
-      <Flex
-        gap={2}
-        overflowX="auto"
-        css={{
-          scrollbarWidth: "none",
-          "&::-webkit-scrollbar": { display: "none" },
-          WebkitOverflowScrolling: "touch",
-        }}
-        pb={1}
-      >
-        {tabs.map((t) => {
-          const isActive = active === t;
-          const label = t === "all" ? "All" : DATA[t]?.title ?? t;
-          return (
+      <Box position="relative">
+        {/* left fade + arrow */}
+        {edges.left && (
+          <>
+            <Box
+              position="absolute"
+              left={0}
+              top={0}
+              bottom={0}
+              w="40px"
+              zIndex={2}
+              pointerEvents="none"
+              bgGradient={{
+                base: "linear(to-r, rgba(250,250,250,0.95), transparent)",
+                _dark: "linear(to-r, rgba(20,20,20,0.95), transparent)",
+              }}
+            />
             <Box
               as="button"
-              key={t}
-              onClick={() => onSelect(t)}
-              flexShrink={0}
-              px={4}
-              py={2}
+              onClick={() => nudge(-1)}
+              aria-label="Scroll filters left"
+              position="absolute"
+              left={1}
+              top="50%"
+              transform="translateY(-50%)"
+              zIndex={3}
+              w="28px"
+              h="28px"
               borderRadius="full"
-              fontSize="sm"
-              fontWeight="semibold"
-              whiteSpace="nowrap"
-              cursor="pointer"
-              transition="all 0.18s ease"
-              bg={isActive ? INK : "transparent"}
-              color={isActive ? "white" : "gray.600"}
-              border="1px solid"
-              borderColor={isActive ? INK : "gray.200"}
-              _hover={{ borderColor: isActive ? INK : AMBER }}
+              bg={{ base: "white", _dark: "gray.700" }}
+              boxShadow="0 2px 8px rgba(14,42,46,0.2)"
+              color={{ base: INK, _dark: "white" }}
+              fontSize="md"
+              fontWeight="bold"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             >
-              {label}
+              ‹
             </Box>
-          );
-        })}
-      </Flex>
+          </>
+        )}
+
+        <Flex
+          ref={scrollRef}
+          gap={2}
+          overflowX="auto"
+          css={{
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": { display: "none" },
+            WebkitOverflowScrolling: "touch",
+          }}
+          pb={1}
+        >
+          {tabs.map((t) => {
+            const isActive = active === t;
+            const label = t === "all" ? "All" : DATA[t]?.title ?? t;
+            return (
+              <Box
+                as="button"
+                key={t}
+                onClick={() => onSelect(t)}
+                flexShrink={0}
+                px={4}
+                py={2}
+                borderRadius="full"
+                fontSize="sm"
+                fontWeight="semibold"
+                whiteSpace="nowrap"
+                cursor="pointer"
+                transition="all 0.18s ease"
+                bg={isActive ? INK : "transparent"}
+                color={isActive ? "white" : { base: "gray.600", _dark: "gray.300" }}
+                border="1px solid"
+                borderColor={isActive ? INK : { base: "gray.200", _dark: "gray.600" }}
+                _hover={{ borderColor: isActive ? INK : AMBER }}
+              >
+                {label}
+              </Box>
+            );
+          })}
+        </Flex>
+
+        {/* right fade + arrow */}
+        {edges.right && (
+          <>
+            <Box
+              position="absolute"
+              right={0}
+              top={0}
+              bottom={0}
+              w="40px"
+              zIndex={2}
+              pointerEvents="none"
+              bgGradient={{
+                base: "linear(to-l, rgba(250,250,250,0.95), transparent)",
+                _dark: "linear(to-l, rgba(20,20,20,0.95), transparent)",
+              }}
+            />
+            <Box
+              as="button"
+              onClick={() => nudge(1)}
+              aria-label="Scroll filters right"
+              position="absolute"
+              right={1}
+              top="50%"
+              transform="translateY(-50%)"
+              zIndex={3}
+              w="28px"
+              h="28px"
+              borderRadius="full"
+              bg={{ base: "white", _dark: "gray.700" }}
+              boxShadow="0 2px 8px rgba(14,42,46,0.2)"
+              color={{ base: INK, _dark: "white" }}
+              fontSize="md"
+              fontWeight="bold"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              ›
+            </Box>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
@@ -214,7 +327,13 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
   <Flex align="center" gap={3} mb={6}>
     <Box w="4px" h="24px" bg={AMBER} borderRadius="full" />
-    <Heading as="h3" size="xl" fontWeight="bold" color={INK} letterSpacing="-0.02em">
+    <Heading
+      as="h3"
+      size="xl"
+      fontWeight="bold"
+      color={{ base: INK, _dark: "white" }}
+      letterSpacing="-0.02em"
+    >
       {title}
     </Heading>
     {count != null && (
@@ -222,10 +341,10 @@ const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
         px={2.5}
         py={0.5}
         borderRadius="full"
-        bg="blackAlpha.100"
+        bg={{ base: "blackAlpha.100", _dark: "whiteAlpha.200" }}
         fontSize="sm"
         fontWeight="bold"
-        color={INK}
+        color={{ base: INK, _dark: "white" }}
       >
         <CountUp end={count} />
       </Box>
@@ -285,10 +404,10 @@ const ExpandableCard = ({
     <MBox
       whileHover={reduce ? undefined : { y: -3 }}
       transition={{ duration: 0.18 }}
-      bg="white"
+      bg={{ base: "white", _dark: "gray.800" }}
       borderRadius="2xl"
       borderWidth="1px"
-      borderColor={open ? AMBER : "gray.100"}
+      borderColor={open ? AMBER : { base: "gray.100", _dark: "gray.700" }}
       overflow="hidden"
       boxShadow={open ? "0 14px 30px -16px rgba(14,42,46,0.4)" : "0 1px 2px rgba(14,42,46,0.04)"}
       h="full"
@@ -306,7 +425,7 @@ const ExpandableCard = ({
         pb={open ? 3 : 6}
       >
         <Box flex="1">
-          <Heading as="h4" size="md" color={INK} lineHeight="1.3">
+          <Heading as="h4" size="md" color={{ base: INK, _dark: "white" }} lineHeight="1.3">
             {heading}
           </Heading>
         </Box>
@@ -355,7 +474,7 @@ const ExpandableCard = ({
                 {(detail: any, i: number) => (
                   <Flex as="li" key={i} gap={2} mb={1.5} align="start">
                     <Box mt="7px" w="5px" h="5px" borderRadius="full" bg={AMBER} flexShrink={0} />
-                    <Text fontSize="sm" color="gray.700" lineHeight="1.55">
+                    <Text fontSize="sm" color={{ base: "gray.700", _dark: "gray.300" }} lineHeight="1.55">
                       {detail}
                     </Text>
                   </Flex>
@@ -394,7 +513,7 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
                 fontWeight="bold"
                 textTransform="uppercase"
                 letterSpacing="0.14em"
-                color="gray.400"
+                color={{ base: "gray.400", _dark: "gray.500" }}
                 mb={3}
               >
                 {year}
@@ -404,10 +523,10 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
               {yearItems.map((item: any, idx: number) => (
                 <Reveal key={idx} delay={Math.min(idx * 0.05, 0.3)}>
                   <Flex
-                    bg="white"
+                    bg={{ base: "white", _dark: "gray.800" }}
                     borderRadius="xl"
                     borderWidth="1px"
-                    borderColor="gray.100"
+                    borderColor={{ base: "gray.100", _dark: "gray.700" }}
                     borderLeft="3px solid"
                     borderLeftColor={AMBER}
                     p={4}
@@ -421,16 +540,16 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
                       {data.items.length - item._originalIndex}]
                     </Box>
                     <Box>
-                      <Box fontWeight="semibold" color={INK} lineHeight="1.4">
+                      <Box fontWeight="semibold" color={{ base: INK, _dark: "white" }} lineHeight="1.4">
                         {item.link ? (
-                          <Link href={item.link} target="_blank" color={INK}>
+                          <Link href={item.link} target="_blank" color={{ base: INK, _dark: "white" }}>
                             {item.title}
                           </Link>
                         ) : (
                           item.title
                         )}
                       </Box>
-                      <Text mt={1} fontSize="sm" color="gray.600" lineHeight="1.5">
+                      <Text mt={1} fontSize="sm" color={{ base: "gray.600", _dark: "gray.400" }} lineHeight="1.5">
                         {renderAuthors(item.authors || "")}{" "}
                         {item.venue && (
                           <Box as="em" fontStyle="italic">
