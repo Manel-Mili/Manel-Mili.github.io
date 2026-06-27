@@ -7,23 +7,48 @@ import {
   Stack,
   IconButton,
   Text,
-  Badge,
   Button,
   HStack,
-  Separator,
 } from "@chakra-ui/react";
 
 import { Tooltip } from "../../components/ui/tooltip";
 import { FaLinkedinIn, FaGithub } from "react-icons/fa";
-import { FaGoogleScholar, FaOrcid, FaDownload } from "react-icons/fa6";
+import { FaGoogleScholar, FaOrcid, FaArrowDown } from "react-icons/fa6";
 
 import { withBase } from "../../src/utils/basePath";
+
+const INK = "#0E2A2E"; // deep clinical teal-ink
+const AMBER = "#E8A23D"; // warm amber accent
+const PAPER = "#FBF7EF"; // warm paper
 
 const RESEARCH_AREAS = [
   "Medical AI",
   "Deep Learning",
   "Computer Vision",
   "Explainable AI",
+];
+
+const PROFILES = [
+  {
+    label: "Google Scholar",
+    href: "https://scholar.google.com/citations?user=-kB49IMAAAAJ",
+    icon: FaGoogleScholar,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/manel-mili-574b76414/",
+    icon: FaLinkedinIn,
+  },
+  {
+    label: "ORCID",
+    href: "https://orcid.org/0000-0003-3892-8579",
+    icon: FaOrcid,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/Manel-Mili",
+    icon: FaGithub,
+  },
 ];
 
 export default function Sidebar() {
@@ -34,141 +59,151 @@ export default function Sidebar() {
       position={{ md: "sticky" }}
       top="96px"
       h="fit-content"
-      bg="white"
-      px={9}
-      py={10}
-      borderRadius="3xl"
-      boxShadow="0 1px 3px rgba(15, 23, 42, 0.04), 0 12px 40px rgba(15, 23, 42, 0.06)"
-      border="1px solid"
-      borderColor="gray.100"
+      bg={PAPER}
+      borderRadius="2xl"
+      overflow="hidden"
+      boxShadow="0 1px 2px rgba(14,42,46,0.08), 0 24px 48px -20px rgba(14,42,46,0.45)"
     >
-      <VStack gap={0} align="stretch">
-        {/* Portrait */}
-        <Box position="relative" alignSelf="center" mb={6}>
-          <Box
-            position="absolute"
-            inset="-6px"
-            borderRadius="full"
-            bgGradient="linear(to-br, blue.100, purple.50)"
-            filter="blur(2px)"
-          />
-          <Image
-            src={withBase("/manel-mili.webp")}
-            alt="Manel Mili"
-            boxSize="172px"
-            objectFit="cover"
-            rounded="full"
-            position="relative"
-            border="4px solid white"
-            boxShadow="0 8px 24px rgba(15, 23, 42, 0.12)"
-          />
-        </Box>
+      {/* ── Ink header ───────────────────────────── */}
+      <Box bg={INK} pt={9} pb={8} px={8} position="relative">
+        {/* amber hairline at the very top */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          h="4px"
+          bg={AMBER}
+        />
 
-        {/* Identity */}
-        <VStack gap={1.5} mb={5}>
-          <Heading
-            as="h1"
-            size="2xl"
-            textAlign="center"
-            letterSpacing="-0.02em"
-            fontWeight="bold"
-          >
-            Manel Mili
-          </Heading>
+        <VStack gap={5}>
+          <Box position="relative">
+            <Image
+              src={withBase("/manel-mili.webp")}
+              alt="Manel Mili"
+              boxSize="150px"
+              objectFit="cover"
+              rounded="full"
+              border="3px solid"
+              borderColor={AMBER}
+              boxShadow="0 10px 30px -8px rgba(0,0,0,0.55)"
+            />
+          </Box>
 
-          <Text
-            fontSize="sm"
-            color="blue.600"
-            fontWeight="semibold"
-            textTransform="uppercase"
-            letterSpacing="0.08em"
-            textAlign="center"
-          >
-            AI Researcher · PhD Candidate
-          </Text>
+          <VStack gap={2}>
+            <Heading
+              as="h1"
+              textAlign="center"
+              color="white"
+              fontWeight="bold"
+              letterSpacing="-0.03em"
+              lineHeight="1"
+              fontSize="34px"
+            >
+              Manel Mili
+            </Heading>
+
+            {/* amber rule */}
+            <Box w="40px" h="2px" bg={AMBER} borderRadius="full" />
+
+            <Text
+              color="whiteAlpha.800"
+              fontSize="xs"
+              fontWeight="semibold"
+              textTransform="uppercase"
+              letterSpacing="0.18em"
+              textAlign="center"
+            >
+              AI Researcher · PhD Candidate
+            </Text>
+          </VStack>
         </VStack>
+      </Box>
 
-        {/* Research focus */}
+      {/* ── Paper body ───────────────────────────── */}
+      <VStack gap={0} align="stretch" px={8} pt={7} pb={9}>
+        {/* Research statement */}
         <Text
-          color="gray.600"
+          color={INK}
           textAlign="center"
           fontSize="sm"
           lineHeight="1.7"
-          maxW="260px"
-          alignSelf="center"
+          fontStyle="italic"
         >
           Building explainable, multimodal AI for medical imaging — with a focus
           on precision oncology.
         </Text>
 
         {/* Research areas */}
-        <HStack flexWrap="wrap" justify="center" gap={2} mt={5}>
+        <HStack flexWrap="wrap" justify="center" gap={2} mt={6}>
           {RESEARCH_AREAS.map((area) => (
-            <Badge
+            <Box
               key={area}
-              variant="subtle"
-              colorPalette="gray"
-              borderRadius="full"
               px={3}
               py={1}
-              fontWeight="medium"
-              fontSize="xs"
+              borderRadius="full"
+              border="1px solid"
+              borderColor="blackAlpha.200"
+              fontSize="11px"
+              fontWeight="semibold"
+              letterSpacing="0.02em"
+              color={INK}
             >
               {area}
-            </Badge>
+            </Box>
           ))}
         </HStack>
 
-        <Separator my={7} borderColor="gray.100" />
+        {/* Divider label */}
+        <SectionLabel>Affiliation</SectionLabel>
 
-        {/* Affiliation */}
         <VStack gap={0.5} align="center">
-          <Text
-            fontSize="xs"
-            textTransform="uppercase"
-            letterSpacing="0.08em"
-            color="gray.400"
-            fontWeight="semibold"
-            mb={1}
-          >
-            Affiliation
-          </Text>
-          <Text fontWeight="semibold" textAlign="center" lineHeight="1.4">
+          <Text fontWeight="bold" textAlign="center" lineHeight="1.4" color={INK}>
             Laboratory of Medical Technologies &amp; Imaging
           </Text>
           <Text color="gray.600" fontSize="sm">
             University of Monastir
           </Text>
-          <Text color="gray.400" fontSize="sm">
+          <Text color="gray.500" fontSize="sm">
             Monastir, Tunisia
           </Text>
         </VStack>
 
-        {/* Contact */}
-        <VStack gap={1} align="center" mt={5}>
+        <SectionLabel>Contact</SectionLabel>
+
+        <VStack gap={1} align="center">
           <Link
             href="mailto:manel.mili@isimm.u-monastir.tn"
-            color="blue.600"
             fontSize="sm"
-            fontWeight="medium"
+            fontWeight="semibold"
+            color={INK}
+            _hover={{ color: AMBER }}
           >
             manel.mili@isimm.u-monastir.tn
           </Link>
-          <Text color="gray.400" fontSize="sm">
+          <Text color="gray.500" fontSize="sm">
             +216 58 621 270
           </Text>
         </VStack>
 
-        {/* CV */}
+        {/* CV button */}
         <Link
           href={withBase("/CV_Manel_Mili.pdf")}
           target="_blank"
           textDecoration="none"
           mt={7}
         >
-          <Button w="full" size="lg" borderRadius="xl">
+          <Button
+            w="full"
+            size="lg"
+            borderRadius="full"
+            bg={INK}
+            color="white"
+            fontWeight="semibold"
+            _hover={{ bg: "#143A40" }}
+          >
             <HStack gap={2}>
-              <FaDownload />
+              <FaArrowDown />
               <Text>Download CV</Text>
             </HStack>
           </Button>
@@ -176,65 +211,43 @@ export default function Sidebar() {
 
         {/* Profiles */}
         <Stack direction="row" gap={2} justify="center" mt={6}>
-          <Tooltip content="Google Scholar">
-            <Link
-              href="https://scholar.google.com/citations?user=-kB49IMAAAAJ"
-              target="_blank"
-            >
-              <IconButton
-                aria-label="Google Scholar"
-                variant="ghost"
-                borderRadius="full"
-                size="sm"
-              >
-                <FaGoogleScholar />
-              </IconButton>
-            </Link>
-          </Tooltip>
-
-          <Tooltip content="LinkedIn">
-            <Link
-              href="https://www.linkedin.com/in/manel-mili-574b76414/"
-              target="_blank"
-            >
-              <IconButton
-                aria-label="LinkedIn"
-                variant="ghost"
-                borderRadius="full"
-                size="sm"
-              >
-                <FaLinkedinIn />
-              </IconButton>
-            </Link>
-          </Tooltip>
-
-          <Tooltip content="ORCID">
-            <Link href="https://orcid.org/0000-0003-3892-8579" target="_blank">
-              <IconButton
-                aria-label="ORCID"
-                variant="ghost"
-                borderRadius="full"
-                size="sm"
-              >
-                <FaOrcid />
-              </IconButton>
-            </Link>
-          </Tooltip>
-
-          <Tooltip content="GitHub">
-            <Link href="https://github.com/Manel-Mili" target="_blank">
-              <IconButton
-                aria-label="GitHub"
-                variant="ghost"
-                borderRadius="full"
-                size="sm"
-              >
-                <FaGithub />
-              </IconButton>
-            </Link>
-          </Tooltip>
+          {PROFILES.map(({ label, href, icon: Icon }) => (
+            <Tooltip key={label} content={label}>
+              <Link href={href} target="_blank">
+                <IconButton
+                  aria-label={label}
+                  variant="outline"
+                  borderRadius="full"
+                  size="sm"
+                  borderColor="blackAlpha.200"
+                  color={INK}
+                  _hover={{ bg: INK, color: "white", borderColor: INK }}
+                >
+                  <Icon />
+                </IconButton>
+              </Link>
+            </Tooltip>
+          ))}
         </Stack>
       </VStack>
     </Box>
+  );
+}
+
+/* Small caps section label with amber tick */
+function SectionLabel({ children }) {
+  return (
+    <HStack justify="center" gap={2} mt={7} mb={3}>
+      <Box w="6px" h="6px" bg={AMBER} borderRadius="full" />
+      <Text
+        fontSize="xs"
+        textTransform="uppercase"
+        letterSpacing="0.16em"
+        color="gray.500"
+        fontWeight="bold"
+      >
+        {children}
+      </Text>
+    </HStack>
   );
 }
