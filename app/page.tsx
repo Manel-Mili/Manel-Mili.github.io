@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import {
   For,
   Box,
@@ -10,6 +11,7 @@ import {
   Link,
   SimpleGrid,
 } from "@chakra-ui/react";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import Hero from "./components/Hero";
 import Sidebar from "./components/Sidebar";
 import researchData from "../src/data/research.json";
@@ -27,27 +29,43 @@ const OWNER = "Mili, M.";
 const PUB_STUBS = ["pubs", "procs", "books"];
 const PREFIX: Record<string, string> = { pubs: "J", procs: "C", books: "B" };
 
-// short clinical codes shown in the mono header strip per section
-const CODE: Record<string, string> = {
-  research: "RES",
-  projects: "PRJ",
-  edus: "EDU",
-  exps: "EXP",
-  service: "SVC",
-  skills: "SKL",
-  certs: "CRT",
+const INK = "#0E2A2E";
+const AMBER = "#E8A23D";
+
+const MBox = motion(Box);
+
+const STUBS = [
+  "research",
+  "pubs",
+  "procs",
+  "books",
+  "projects",
+  "edus",
+  "exps",
+  "service",
+  "skills",
+  "certs",
+] as const;
+
+const DATA: Record<string, any> = {
+  research: researchData,
+  pubs: pubsData,
+  procs: procsData,
+  books: booksData,
+  projects: projectsData,
+  edus: edusData,
+  exps: expsData,
+  service: serviceData,
+  skills: skillsData,
+  certs: certsData,
 };
 
-const INK = "#0E2A2E";
-const INK2 = "#143A40";
-const AMBER = "#E8A23D";
-const MONO = "'JetBrains Mono', 'SF Mono', 'Roboto Mono', monospace";
-
-// faint scan-line texture as a CSS gradient (no asset needed)
-const SCANLINES =
-  "repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 4px)";
-
 export default function Page() {
+  const [active, setActive] = useState<string>("all");
+
+  const available = STUBS.filter((s) => DATA[s]);
+  const visible = active === "all" ? available : available.filter((s) => s === active);
+
   return (
     <Container maxW="container.xl" py={8}>
       <Flex direction={{ base: "column", md: "row" }} gap={8}>
@@ -56,49 +74,15 @@ export default function Page() {
         <Box w={{ base: "full", md: "3/4" }}>
           <Hero />
 
-          <For
-            each={[
-              "research",
-              "pubs",
-              "procs",
-              "books",
-              "projects",
-              "edus",
-              "exps",
-              "service",
-              "skills",
-              "certs",
-            ]}
-          >
-            {(stub) => {
-              const data = (() => {
-                switch (stub) {
-                  case "research":
-                    return researchData;
-                  case "pubs":
-                    return pubsData;
-                  case "procs":
-                    return procsData;
-                  case "books":
-                    return booksData;
-                  case "projects":
-                    return projectsData;
-                  case "edus":
-                    return edusData;
-                  case "exps":
-                    return expsData;
-                  case "service":
-                    return serviceData;
-                  case "skills":
-                    return skillsData;
-                  case "certs":
-                    return certsData;
-                  default:
-                    return null;
-                }
-              })();
-              return data ? <Section key={stub} data={data} stub={stub} /> : <></>;
-            }}
+          {/* ── Filter bar (horizontal scroll on mobile) ── */}
+          <FilterBar
+            stubs={available}
+            active={active}
+            onSelect={setActive}
+          />
+
+          <For each={visible}>
+            {(stub) => <Section key={stub} data={DATA[stub]} stub={stub} />}
           </For>
         </Box>
       </Flex>
@@ -106,7 +90,73 @@ export default function Page() {
   );
 }
 
-// Bold the owner's name within an author string
+/* ════════════════════════════════════════════════════════
+   FILTER BAR — sticky, swipeable pill nav
+   ════════════════════════════════════════════════════════ */
+const FilterBar = ({
+  stubs,
+  active,
+  onSelect,
+}: {
+  stubs: readonly string[] | string[];
+  active: string;
+  onSelect: (s: string) => void;
+}) => {
+  const tabs = ["all", ...stubs];
+  return (
+    <Box
+      position="sticky"
+      top={{ base: "0", md: "80px" }}
+      zIndex={5}
+      mb={4}
+      py={2}
+      bg="rgba(255,255,255,0.85)"
+      backdropFilter="blur(8px)"
+      borderRadius="xl"
+    >
+      <Flex
+        gap={2}
+        overflowX="auto"
+        css={{
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": { display: "none" },
+          WebkitOverflowScrolling: "touch",
+        }}
+        pb={1}
+      >
+        {tabs.map((t) => {
+          const isActive = active === t;
+          const label = t === "all" ? "All" : DATA[t]?.title ?? t;
+          return (
+            <Box
+              as="button"
+              key={t}
+              onClick={() => onSelect(t)}
+              flexShrink={0}
+              px={4}
+              py={2}
+              borderRadius="full"
+              fontSize="sm"
+              fontWeight="semibold"
+              whiteSpace="nowrap"
+              cursor="pointer"
+              transition="all 0.18s ease"
+              bg={isActive ? INK : "transparent"}
+              color={isActive ? "white" : "gray.600"}
+              border="1px solid"
+              borderColor={isActive ? INK : "gray.200"}
+              _hover={{ borderColor: isActive ? INK : AMBER }}
+            >
+              {label}
+            </Box>
+          );
+        })}
+      </Flex>
+    </Box>
+  );
+};
+
+/* ── owner bolding ── */
 const renderAuthors = (authors: string) => {
   if (!authors.includes(OWNER)) return authors;
   const segments = authors.split(OWNER);
@@ -118,44 +168,82 @@ const renderAuthors = (authors: string) => {
   ));
 };
 
-/* ── Section header: clinical readout style ───────────── */
-const SectionHeader = ({ title, code }: { title: string; code?: string }) => (
+/* ── animated count-up ── */
+const CountUp = ({ end }: { end: number }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const reduce = useReducedMotion();
+  const [n, setN] = useState(reduce ? end : 0);
+
+  useEffect(() => {
+    if (!inView || reduce) return;
+    let raf: number;
+    const start = performance.now();
+    const dur = 900;
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(eased * end));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, end, reduce]);
+
+  return <span ref={ref}>{n}</span>;
+};
+
+/* ── scroll-reveal wrapper ── */
+const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const reduce = useReducedMotion();
+  return (
+    <MBox
+      ref={ref}
+      initial={reduce ? false : { opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </MBox>
+  );
+};
+
+/* ── section header ── */
+const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
   <Flex align="center" gap={3} mb={6}>
-    {code && (
-      <Box
-        fontFamily={MONO}
-        fontSize="11px"
-        fontWeight="bold"
-        letterSpacing="0.1em"
-        color="white"
-        bg={INK}
-        px={2.5}
-        py={1}
-        borderRadius="md"
-      >
-        {code}
-      </Box>
-    )}
+    <Box w="4px" h="24px" bg={AMBER} borderRadius="full" />
     <Heading as="h3" size="xl" fontWeight="bold" color={INK} letterSpacing="-0.02em">
       {title}
     </Heading>
-    {/* dashed clinical rule */}
-    <Box
-      flex="1"
-      h="0"
-      borderTop="1px dashed"
-      borderColor="blackAlpha.300"
-    />
+    {count != null && (
+      <Box
+        px={2.5}
+        py={0.5}
+        borderRadius="full"
+        bg="blackAlpha.100"
+        fontSize="sm"
+        fontWeight="bold"
+        color={INK}
+      >
+        <CountUp end={count} />
+      </Box>
+    )}
+    <Box flex="1" h="1px" bg="blackAlpha.200" />
   </Flex>
 );
 
-// Reusable Section Component
+/* ════════════════════════════════════════════════════════
+   SECTION
+   ════════════════════════════════════════════════════════ */
 const Section = ({ data, stub }: { data: any; stub: string }) => {
   const isPub = PUB_STUBS.includes(stub);
-
   return (
-    <Box py={8}>
-      <SectionHeader title={data.title} code={CODE[stub]} />
+    <Box py={8} scrollMarginTop="120px" id={stub}>
+      <Reveal>
+        <SectionHeader title={data.title} count={data.items?.length} />
+      </Reveal>
 
       {isPub ? (
         <PublicationList data={data} stub={stub} />
@@ -163,15 +251,13 @@ const Section = ({ data, stub }: { data: any; stub: string }) => {
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
           <For each={data.items}>
             {(item: any, idx: number) => (
-              <SpecimenPlate
-                key={idx}
-                code={CODE[stub] || "ITM"}
-                index={idx + 1}
-                total={data.items.length}
-                heading={item.institution || item.title || item.name}
-                marker={item.year || item.date || item.period}
-                details={item.details}
-              />
+              <Reveal key={idx} delay={Math.min(idx * 0.06, 0.4)}>
+                <ExpandableCard
+                  heading={item.institution || item.title || item.name}
+                  marker={item.year || item.date || item.period}
+                  details={item.details}
+                />
+              </Reveal>
             )}
           </For>
         </SimpleGrid>
@@ -181,114 +267,111 @@ const Section = ({ data, stub }: { data: any; stub: string }) => {
 };
 
 /* ════════════════════════════════════════════════════════
-   SPECIMEN PLATE — ink panel, scan-lines, mono data header
+   EXPANDABLE CARD — tap to reveal details (touch-friendly)
    ════════════════════════════════════════════════════════ */
-const SpecimenPlate = ({
-  code,
-  index,
-  total,
+const ExpandableCard = ({
   heading,
   marker,
-  details,
+  details = [],
 }: {
-  code: string;
-  index: number;
-  total: number;
   heading: string;
   marker?: string;
   details?: any[];
 }) => {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return (
-    <Box
-      position="relative"
-      borderRadius="xl"
-      overflow="hidden"
-      bg={INK}
-      color="white"
-      border="1px solid"
-      borderColor="blackAlpha.400"
-      transition="all 0.2s ease"
-      _hover={{
-        transform: "translateY(-3px)",
-        boxShadow: "0 18px 36px -18px rgba(14,42,46,0.7)",
-      }}
-    >
-      {/* scan-line overlay */}
-      <Box
-        position="absolute"
-        inset={0}
-        bg={SCANLINES}
-        pointerEvents="none"
-        opacity={0.6}
-      />
-      {/* amber corner crosshair */}
-      <Box
-        position="absolute"
-        top="10px"
-        right="10px"
-        w="14px"
-        h="14px"
-        pointerEvents="none"
-      >
-        <Box position="absolute" top="6px" left={0} right={0} h="1px" bg={AMBER} opacity={0.8} />
-        <Box position="absolute" left="6px" top={0} bottom={0} w="1px" bg={AMBER} opacity={0.8} />
-      </Box>
+  const reduce = useReducedMotion();
+  const hasDetails = details && details.length > 0;
+  const [open, setOpen] = useState(false);
 
-      {/* mono data header strip */}
+  return (
+    <MBox
+      whileHover={reduce ? undefined : { y: -3 }}
+      transition={{ duration: 0.18 }}
+      bg="white"
+      borderRadius="2xl"
+      borderWidth="1px"
+      borderColor={open ? AMBER : "gray.100"}
+      overflow="hidden"
+      boxShadow={open ? "0 14px 30px -16px rgba(14,42,46,0.4)" : "0 1px 2px rgba(14,42,46,0.04)"}
+      h="full"
+    >
       <Flex
-        position="relative"
-        align="center"
+        as="button"
+        w="full"
+        textAlign="left"
+        onClick={() => hasDetails && setOpen((o) => !o)}
+        cursor={hasDetails ? "pointer" : "default"}
         justify="space-between"
-        px={4}
-        py={2}
-        borderBottom="1px solid"
-        borderColor="whiteAlpha.200"
-        bg={INK2}
-        fontFamily={MONO}
-        fontSize="10px"
-        letterSpacing="0.08em"
-        color="whiteAlpha.700"
+        align="start"
+        gap={3}
+        p={6}
+        pb={open ? 3 : 6}
       >
-        <Text>
-          {code}-{pad(index)} / {pad(total)}
-        </Text>
-        {marker && <Text color={AMBER}>{marker}</Text>}
+        <Box flex="1">
+          <Heading as="h4" size="md" color={INK} lineHeight="1.3">
+            {heading}
+          </Heading>
+        </Box>
+
+        <Flex align="center" gap={2} flexShrink={0}>
+          {marker && (
+            <Box
+              px={2.5}
+              py={1}
+              borderRadius="full"
+              bg={INK}
+              color="white"
+              fontSize="11px"
+              fontWeight="bold"
+            >
+              {marker}
+            </Box>
+          )}
+          {hasDetails && (
+            <MBox
+              animate={{ rotate: open ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+              color={AMBER}
+              fontSize="lg"
+              lineHeight="1"
+              fontWeight="bold"
+            >
+              ⌄
+            </MBox>
+          )}
+        </Flex>
       </Flex>
 
-      {/* body */}
-      <Box position="relative" p={5}>
-        <Heading as="h4" size="md" color="white" lineHeight="1.3" mb={3}>
-          {heading}
-        </Heading>
-
-        <Box as="ul" listStyleType="none" m={0} p={0}>
-          <For each={details || []}>
-            {(detail: any, i: number) => (
-              <Flex as="li" key={i} gap={2.5} mb={2} align="start">
-                <Text
-                  fontFamily={MONO}
-                  fontSize="10px"
-                  color={AMBER}
-                  mt="3px"
-                  flexShrink={0}
-                >
-                  ▸
-                </Text>
-                <Text fontSize="sm" color="whiteAlpha.850" lineHeight="1.55">
-                  {detail}
-                </Text>
-              </Flex>
-            )}
-          </For>
-        </Box>
-      </Box>
-    </Box>
+      <AnimatePresence initial={false}>
+        {open && hasDetails && (
+          <MBox
+            key="body"
+            initial={reduce ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduce ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            overflow="hidden"
+          >
+            <Box as="ul" listStyleType="none" m={0} px={6} pb={6} pt={0}>
+              <For each={details}>
+                {(detail: any, i: number) => (
+                  <Flex as="li" key={i} gap={2} mb={1.5} align="start">
+                    <Box mt="7px" w="5px" h="5px" borderRadius="full" bg={AMBER} flexShrink={0} />
+                    <Text fontSize="sm" color="gray.700" lineHeight="1.55">
+                      {detail}
+                    </Text>
+                  </Flex>
+                )}
+              </For>
+            </Box>
+          </MBox>
+        )}
+      </AnimatePresence>
+    </MBox>
   );
 };
 
 /* ════════════════════════════════════════════════════════
-   PUBLICATIONS — clinical readout list
+   PUBLICATIONS — revealed numbered list
    ════════════════════════════════════════════════════════ */
 const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
   const prefix = PREFIX[stub];
@@ -306,67 +389,64 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
         const yearItems = itemsWithIndex.filter((item: any) => item.year === year);
         return (
           <Box key={year} mb={6}>
-            <Text
-              fontFamily={MONO}
-              fontSize="11px"
-              fontWeight="bold"
-              letterSpacing="0.12em"
-              color="gray.400"
-              mb={3}
-            >
-              ── {year}
-            </Text>
+            <Reveal>
+              <Text
+                fontSize="xs"
+                fontWeight="bold"
+                textTransform="uppercase"
+                letterSpacing="0.14em"
+                color="gray.400"
+                mb={3}
+              >
+                {year}
+              </Text>
+            </Reveal>
             <Box display="flex" flexDirection="column" gap={3}>
               {yearItems.map((item: any, idx: number) => (
-                <Flex
-                  key={idx}
-                  bg="white"
-                  borderRadius="lg"
-                  borderWidth="1px"
-                  borderColor="gray.100"
-                  borderLeft="3px solid"
-                  borderLeftColor={AMBER}
-                  p={4}
-                  gap={3}
-                  align="start"
-                  transition="all 0.15s ease"
-                  _hover={{ borderColor: "gray.200", borderLeftColor: AMBER, boxShadow: "sm" }}
-                >
-                  <Box
-                    minW="3em"
-                    fontFamily={MONO}
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color={INK}
+                <Reveal key={idx} delay={Math.min(idx * 0.05, 0.3)}>
+                  <Flex
+                    bg="white"
+                    borderRadius="xl"
+                    borderWidth="1px"
+                    borderColor="gray.100"
+                    borderLeft="3px solid"
+                    borderLeftColor={AMBER}
+                    p={4}
+                    gap={3}
+                    align="start"
+                    transition="box-shadow 0.15s ease"
+                    _hover={{ boxShadow: "md" }}
                   >
-                    [{prefix}
-                    {data.items.length - item._originalIndex}]
-                  </Box>
-                  <Box>
-                    <Box fontWeight="semibold" color={INK} lineHeight="1.4">
-                      {item.link ? (
-                        <Link href={item.link} target="_blank" color={INK}>
-                          {item.title}
-                        </Link>
-                      ) : (
-                        item.title
-                      )}
+                    <Box minW="2.8em" fontSize="sm" fontWeight="bold" color={AMBER}>
+                      [{prefix}
+                      {data.items.length - item._originalIndex}]
                     </Box>
-                    <Text mt={1} fontSize="sm" color="gray.600" lineHeight="1.5">
-                      {renderAuthors(item.authors || "")}{" "}
-                      {item.venue && (
-                        <Box as="em" fontStyle="italic">
-                          {item.venue}
-                        </Box>
-                      )}
-                      {item.volume ? `, ${item.volume}` : ""}
-                      {item.number ? `(${item.number})` : ""}
-                      {item.pages ? `: ${item.pages}` : ""}
-                      {item.venue ? "." : ""}
-                      {item.note ? ` (${item.note})` : ""}
-                    </Text>
-                  </Box>
-                </Flex>
+                    <Box>
+                      <Box fontWeight="semibold" color={INK} lineHeight="1.4">
+                        {item.link ? (
+                          <Link href={item.link} target="_blank" color={INK}>
+                            {item.title}
+                          </Link>
+                        ) : (
+                          item.title
+                        )}
+                      </Box>
+                      <Text mt={1} fontSize="sm" color="gray.600" lineHeight="1.5">
+                        {renderAuthors(item.authors || "")}{" "}
+                        {item.venue && (
+                          <Box as="em" fontStyle="italic">
+                            {item.venue}
+                          </Box>
+                        )}
+                        {item.volume ? `, ${item.volume}` : ""}
+                        {item.number ? `(${item.number})` : ""}
+                        {item.pages ? `: ${item.pages}` : ""}
+                        {item.venue ? "." : ""}
+                        {item.note ? ` (${item.note})` : ""}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Reveal>
               ))}
             </Box>
           </Box>
