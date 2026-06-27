@@ -116,15 +116,15 @@ export default function Sidebar() {
         <Button
           mt={5}
           colorScheme="blue"
-          leftIcon={<FaDownload />}
+          startIcon={<FaDownload />}
           as="a"
           href={withBase("/CV_Manel_Mili.pdf")}
           target="_blank"
           size="md"
           borderRadius="full"
-        >
+          >
           Download CV
-        </Button>
+          </Button>
 
         {/* Social Icons */}
         <Stack
