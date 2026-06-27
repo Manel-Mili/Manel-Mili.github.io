@@ -10,8 +10,8 @@ import {
   Text,
   Link,
   SimpleGrid,
-  useColorModeValue,
 } from "@chakra-ui/react";
+import { useColorModeValue } from "@/components/ui/color-mode";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import Hero from "./components/Hero";
 import Sidebar from "./components/Sidebar";
