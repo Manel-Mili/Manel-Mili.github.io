@@ -1,6 +1,6 @@
 # Manel Mili - Academic Portfolio
 
-Personal academic homepage for Manel Mili, PhD student in medical AI at the Laboratory of Medical Technologies and Imaging (LTIM), University of Monastir, Tunisia.
+Personal academic homepage for Manel Mili, PhD student in Medical AI at the Laboratory of Medical Technologies and Imaging (LTIM-LR12ES06), University of Monastir, Tunisia.
 
 Built with Next.js 16 (App Router), Chakra UI, and TypeScript. Content is data-driven through JSON files, and the site is exported as a fully static website for GitHub Pages.
 
