@@ -27,6 +27,7 @@ This project uses pnpm.
 
 ```bash
 pnpm install
+npm i framer-motion
 pnpm dev          # http://localhost:3000
 pnpm type-check   # TypeScript check
 pnpm build        # static export to ./out
