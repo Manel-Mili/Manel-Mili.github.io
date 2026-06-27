@@ -231,17 +231,7 @@ const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
         <CountUp end={count} />
       </Box>
     )}
-    <Flex
-      gap={2}
-      flexWrap={{ base: "nowrap", lg: "wrap" }}
-      overflowX={{ base: "auto", lg: "visible" }}
-      justify={{ lg: "center" }}
-      css={{
-        scrollbarWidth: "none",
-        "&::-webkit-scrollbar": {
-          display: "none",
-        },
-      }}>
+  </Flex>
 );
 
 /* ════════════════════════════════════════════════════════
