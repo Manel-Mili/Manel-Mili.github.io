@@ -24,7 +24,6 @@ import expsData from "../src/data/exps.json";
 import serviceData from "../src/data/service.json";
 import skillsData from "../src/data/skills.json";
 import certsData from "../src/data/certs.json";
-import { useColorModeValue } from "@chakra-ui/react";
 
 const OWNER = "Mili, M.";
 const PUB_STUBS = ["pubs", "procs", "books"];
