@@ -13,14 +13,8 @@ import {
 } from "@chakra-ui/react";
 
 import { Tooltip } from "../../components/ui/tooltip";
-
-import {
-  FaGoogleScholar,
-  FaLinkedinIn,
-  FaOrcid,
-  FaGithub,
-  FaDownload,
-} from "react-icons/fa";
+import { FaLinkedinIn, FaGithub, FaDownload } from "react-icons/fa";
+import { FaGoogleScholar, FaOrcid } from "react-icons/fa6";
 
 import { withBase } from "../../src/utils/basePath";
 
