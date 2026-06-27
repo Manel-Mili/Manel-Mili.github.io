@@ -10,6 +10,7 @@ import {
   Text,
   Link,
   SimpleGrid,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import Hero from "./components/Hero";
@@ -60,10 +61,24 @@ const DATA: Record<string, any> = {
   certs: certsData,
 };
 
+/* Static labels so tab names never depend on JSON having a `title` field */
+const LABELS: Record<string, string> = {
+  research: "Research Interests",
+  pubs: "Journal Articles",
+  procs: "Conference Papers",
+  books: "Book Chapters",
+  projects: "Selected Projects",
+  edus: "Education",
+  exps: "Experience",
+  service: "Service",
+  skills: "Skills",
+  certs: "Certifications",
+};
+
 export default function Page() {
   const [active, setActive] = useState<string>("all");
 
-  const available = STUBS.filter((s) => DATA[s]);
+  const available = STUBS.filter((s) => DATA[s] && DATA[s].items?.length > 0);
   const visible = active === "all" ? available : available.filter((s) => s === active);
 
   return (
@@ -75,11 +90,7 @@ export default function Page() {
           <Hero />
 
           {/* ── Filter bar (horizontal scroll on mobile) ── */}
-          <FilterBar
-            stubs={available}
-            active={active}
-            onSelect={setActive}
-          />
+          <FilterBar stubs={available} active={active} onSelect={setActive} />
 
           <For each={visible}>
             {(stub) => <Section key={stub} data={DATA[stub]} stub={stub} />}
@@ -103,6 +114,13 @@ const FilterBar = ({
   onSelect: (s: string) => void;
 }) => {
   const tabs = ["all", ...stubs];
+
+  const barBg = useColorModeValue("rgba(255,255,255,0.85)", "rgba(18,22,24,0.78)");
+  const activeBg = useColorModeValue(INK, AMBER);
+  const activeColor = useColorModeValue("white", INK);
+  const inactiveColor = useColorModeValue("gray.600", "gray.300");
+  const inactiveBorder = useColorModeValue("gray.200", "whiteAlpha.300");
+
   return (
     <Box
       position="sticky"
@@ -110,7 +128,7 @@ const FilterBar = ({
       zIndex={5}
       mb={4}
       py={2}
-      bg="rgba(255,255,255,0.85)"
+      bg={barBg}
       backdropFilter="blur(8px)"
       borderRadius="xl"
     >
@@ -126,7 +144,7 @@ const FilterBar = ({
       >
         {tabs.map((t) => {
           const isActive = active === t;
-          const label = t === "all" ? "All" : DATA[t]?.title ?? t;
+          const label = t === "all" ? "All" : LABELS[t] ?? DATA[t]?.title ?? t;
           return (
             <Box
               as="button"
@@ -141,11 +159,11 @@ const FilterBar = ({
               whiteSpace="nowrap"
               cursor="pointer"
               transition="all 0.18s ease"
-              bg={isActive ? INK : "transparent"}
-              color={isActive ? "white" : "gray.600"}
+              bg={isActive ? activeBg : "transparent"}
+              color={isActive ? activeColor : inactiveColor}
               border="1px solid"
-              borderColor={isActive ? INK : "gray.200"}
-              _hover={{ borderColor: isActive ? INK : AMBER }}
+              borderColor={isActive ? activeBg : inactiveBorder}
+              _hover={{ borderColor: AMBER }}
             >
               {label}
             </Box>
@@ -211,28 +229,35 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 };
 
 /* ── section header ── */
-const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
-  <Flex align="center" gap={3} mb={6}>
-    <Box w="4px" h="24px" bg={AMBER} borderRadius="full" />
-    <Heading as="h3" size="xl" fontWeight="bold" color={INK} letterSpacing="-0.02em">
-      {title}
-    </Heading>
-    {count != null && (
-      <Box
-        px={2.5}
-        py={0.5}
-        borderRadius="full"
-        bg="blackAlpha.100"
-        fontSize="sm"
-        fontWeight="bold"
-        color={INK}
-      >
-        <CountUp end={count} />
-      </Box>
-    )}
-    <Box flex="1" h="1px" bg="blackAlpha.200" />
-  </Flex>
-);
+const SectionHeader = ({ title, count }: { title: string; count?: number }) => {
+  const headColor = useColorModeValue(INK, "whiteAlpha.900");
+  const badgeBg = useColorModeValue("blackAlpha.100", "whiteAlpha.200");
+  const badgeColor = useColorModeValue(INK, "whiteAlpha.900");
+  const lineBg = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
+
+  return (
+    <Flex align="center" gap={3} mb={6}>
+      <Box w="4px" h="24px" bg={AMBER} borderRadius="full" />
+      <Heading as="h3" size="xl" fontWeight="bold" color={headColor} letterSpacing="-0.02em">
+        {title}
+      </Heading>
+      {count != null && (
+        <Box
+          px={2.5}
+          py={0.5}
+          borderRadius="full"
+          bg={badgeBg}
+          fontSize="sm"
+          fontWeight="bold"
+          color={badgeColor}
+        >
+          <CountUp end={count} />
+        </Box>
+      )}
+      <Box flex="1" h="1px" bg={lineBg} />
+    </Flex>
+  );
+};
 
 /* ════════════════════════════════════════════════════════
    SECTION
@@ -242,7 +267,7 @@ const Section = ({ data, stub }: { data: any; stub: string }) => {
   return (
     <Box py={8} scrollMarginTop="120px" id={stub}>
       <Reveal>
-        <SectionHeader title={data.title} count={data.items?.length} />
+        <SectionHeader title={data.title ?? LABELS[stub]} count={data.items?.length} />
       </Reveal>
 
       {isPub ? (
@@ -282,16 +307,31 @@ const ExpandableCard = ({
   const hasDetails = details && details.length > 0;
   const [open, setOpen] = useState(false);
 
+  const cardBg = useColorModeValue("white", "gray.800");
+  const restBorder = useColorModeValue("gray.100", "whiteAlpha.200");
+  const headColor = useColorModeValue(INK, "whiteAlpha.900");
+  const markerBg = useColorModeValue(INK, AMBER);
+  const markerColor = useColorModeValue("white", INK);
+  const detailColor = useColorModeValue("gray.700", "gray.300");
+  const restShadow = useColorModeValue(
+    "0 1px 2px rgba(14,42,46,0.04)",
+    "0 1px 2px rgba(0,0,0,0.4)"
+  );
+  const openShadow = useColorModeValue(
+    "0 14px 30px -16px rgba(14,42,46,0.4)",
+    "0 14px 30px -16px rgba(0,0,0,0.7)"
+  );
+
   return (
     <MBox
       whileHover={reduce ? undefined : { y: -3 }}
       transition={{ duration: 0.18 }}
-      bg="white"
+      bg={cardBg}
       borderRadius="2xl"
       borderWidth="1px"
-      borderColor={open ? AMBER : "gray.100"}
+      borderColor={open ? AMBER : restBorder}
       overflow="hidden"
-      boxShadow={open ? "0 14px 30px -16px rgba(14,42,46,0.4)" : "0 1px 2px rgba(14,42,46,0.04)"}
+      boxShadow={open ? openShadow : restShadow}
       h="full"
     >
       <Flex
@@ -307,7 +347,7 @@ const ExpandableCard = ({
         pb={open ? 3 : 6}
       >
         <Box flex="1">
-          <Heading as="h4" size="md" color={INK} lineHeight="1.3">
+          <Heading as="h4" size="md" color={headColor} lineHeight="1.3">
             {heading}
           </Heading>
         </Box>
@@ -318,8 +358,8 @@ const ExpandableCard = ({
               px={2.5}
               py={1}
               borderRadius="full"
-              bg={INK}
-              color="white"
+              bg={markerBg}
+              color={markerColor}
               fontSize="11px"
               fontWeight="bold"
             >
@@ -356,7 +396,7 @@ const ExpandableCard = ({
                 {(detail: any, i: number) => (
                   <Flex as="li" key={i} gap={2} mb={1.5} align="start">
                     <Box mt="7px" w="5px" h="5px" borderRadius="full" bg={AMBER} flexShrink={0} />
-                    <Text fontSize="sm" color="gray.700" lineHeight="1.55">
+                    <Text fontSize="sm" color={detailColor} lineHeight="1.55">
                       {detail}
                     </Text>
                   </Flex>
@@ -375,6 +415,13 @@ const ExpandableCard = ({
    ════════════════════════════════════════════════════════ */
 const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
   const prefix = PREFIX[stub];
+
+  const yearColor = useColorModeValue("gray.400", "gray.500");
+  const cardBg = useColorModeValue("white", "gray.800");
+  const cardBorder = useColorModeValue("gray.100", "whiteAlpha.200");
+  const titleColor = useColorModeValue(INK, "whiteAlpha.900");
+  const metaColor = useColorModeValue("gray.600", "gray.400");
+
   const itemsWithIndex = data.items.map((item: any, idx: number) => ({
     ...item,
     _originalIndex: idx,
@@ -395,7 +442,7 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
                 fontWeight="bold"
                 textTransform="uppercase"
                 letterSpacing="0.14em"
-                color="gray.400"
+                color={yearColor}
                 mb={3}
               >
                 {year}
@@ -405,10 +452,10 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
               {yearItems.map((item: any, idx: number) => (
                 <Reveal key={idx} delay={Math.min(idx * 0.05, 0.3)}>
                   <Flex
-                    bg="white"
+                    bg={cardBg}
                     borderRadius="xl"
                     borderWidth="1px"
-                    borderColor="gray.100"
+                    borderColor={cardBorder}
                     borderLeft="3px solid"
                     borderLeftColor={AMBER}
                     p={4}
@@ -422,16 +469,16 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
                       {data.items.length - item._originalIndex}]
                     </Box>
                     <Box>
-                      <Box fontWeight="semibold" color={INK} lineHeight="1.4">
+                      <Box fontWeight="semibold" color={titleColor} lineHeight="1.4">
                         {item.link ? (
-                          <Link href={item.link} target="_blank" color={INK}>
+                          <Link href={item.link} target="_blank" color={titleColor}>
                             {item.title}
                           </Link>
                         ) : (
                           item.title
                         )}
                       </Box>
-                      <Text mt={1} fontSize="sm" color="gray.600" lineHeight="1.5">
+                      <Text mt={1} fontSize="sm" color={metaColor} lineHeight="1.5">
                         {renderAuthors(item.authors || "")}{" "}
                         {item.venue && (
                           <Box as="em" fontStyle="italic">
