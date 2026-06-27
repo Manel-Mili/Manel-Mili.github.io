@@ -10,6 +10,7 @@ import {
   Link,
   Separator,
 } from "@chakra-ui/react";
+import Hero from "./components/Hero";
 import Sidebar from "./components/Sidebar";
 import researchData from "../src/data/research.json";
 import pubsData from "../src/data/pubs.json";
@@ -33,7 +34,9 @@ export default function Page() {
         <Sidebar />
 
         <Box w={{ base: "full", md: "3/4" }}>
+          <Hero />
           {/* Main Content */}
+          
           <For
             each={[
               "research",
