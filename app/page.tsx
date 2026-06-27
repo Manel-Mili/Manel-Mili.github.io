@@ -24,6 +24,7 @@ import expsData from "../src/data/exps.json";
 import serviceData from "../src/data/service.json";
 import skillsData from "../src/data/skills.json";
 import certsData from "../src/data/certs.json";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const OWNER = "Mili, M.";
 const PUB_STUBS = ["pubs", "procs", "books"];
@@ -110,7 +111,7 @@ const FilterBar = ({
       zIndex={5}
       mb={4}
       py={2}
-      bg="rgba(255,255,255,0.85)"
+      bg="rgba(200,150,100,0.85)"
       backdropFilter="blur(8px)"
       borderRadius="xl"
     >
@@ -230,8 +231,17 @@ const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
         <CountUp end={count} />
       </Box>
     )}
-    <Box flex="1" h="1px" bg="blackAlpha.200" />
-  </Flex>
+    <Flex
+      gap={2}
+      flexWrap={{ base: "nowrap", lg: "wrap" }}
+      overflowX={{ base: "auto", lg: "visible" }}
+      justify={{ lg: "center" }}
+      css={{
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+      }}>
 );
 
 /* ════════════════════════════════════════════════════════
