@@ -25,11 +25,27 @@ import certsData from "../src/data/certs.json";
 
 const OWNER = "Mili, M.";
 const PUB_STUBS = ["pubs", "procs", "books"];
-const TIMELINE_STUBS = ["edus", "exps"]; // render as a vertical spine
 const PREFIX: Record<string, string> = { pubs: "J", procs: "C", books: "B" };
 
+// short clinical codes shown in the mono header strip per section
+const CODE: Record<string, string> = {
+  research: "RES",
+  projects: "PRJ",
+  edus: "EDU",
+  exps: "EXP",
+  service: "SVC",
+  skills: "SKL",
+  certs: "CRT",
+};
+
 const INK = "#0E2A2E";
+const INK2 = "#143A40";
 const AMBER = "#E8A23D";
+const MONO = "'JetBrains Mono', 'SF Mono', 'Roboto Mono', monospace";
+
+// faint scan-line texture as a CSS gradient (no asset needed)
+const SCANLINES =
+  "repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 4px)";
 
 export default function Page() {
   return (
@@ -102,219 +118,177 @@ const renderAuthors = (authors: string) => {
   ));
 };
 
-/* ── Section header: oversized index eyebrow + title ───── */
-const SectionHeader = ({ title }: { title: string }) => (
-  <Flex align="center" gap={3} mb={8}>
-    <Box w="4px" h="24px" bg={AMBER} borderRadius="full" />
-    <Heading
-      as="h3"
-      size="xl"
-      fontWeight="bold"
-      color={INK}
-      letterSpacing="-0.02em"
-    >
+/* ── Section header: clinical readout style ───────────── */
+const SectionHeader = ({ title, code }: { title: string; code?: string }) => (
+  <Flex align="center" gap={3} mb={6}>
+    {code && (
+      <Box
+        fontFamily={MONO}
+        fontSize="11px"
+        fontWeight="bold"
+        letterSpacing="0.1em"
+        color="white"
+        bg={INK}
+        px={2.5}
+        py={1}
+        borderRadius="md"
+      >
+        {code}
+      </Box>
+    )}
+    <Heading as="h3" size="xl" fontWeight="bold" color={INK} letterSpacing="-0.02em">
       {title}
     </Heading>
-    <Box flex="1" h="1px" bg="blackAlpha.200" />
+    {/* dashed clinical rule */}
+    <Box
+      flex="1"
+      h="0"
+      borderTop="1px dashed"
+      borderColor="blackAlpha.300"
+    />
   </Flex>
 );
 
 // Reusable Section Component
 const Section = ({ data, stub }: { data: any; stub: string }) => {
   const isPub = PUB_STUBS.includes(stub);
-  const isTimeline = TIMELINE_STUBS.includes(stub);
 
   return (
     <Box py={8}>
-      <SectionHeader title={data.title} />
+      <SectionHeader title={data.title} code={CODE[stub]} />
 
       {isPub ? (
         <PublicationList data={data} stub={stub} />
-      ) : isTimeline ? (
-        <Timeline data={data} />
       ) : (
-        <CardGrid data={data} />
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
+          <For each={data.items}>
+            {(item: any, idx: number) => (
+              <SpecimenPlate
+                key={idx}
+                code={CODE[stub] || "ITM"}
+                index={idx + 1}
+                total={data.items.length}
+                heading={item.institution || item.title || item.name}
+                marker={item.year || item.date || item.period}
+                details={item.details}
+              />
+            )}
+          </For>
+        </SimpleGrid>
       )}
     </Box>
   );
 };
 
 /* ════════════════════════════════════════════════════════
-   TIMELINE — vertical spine with amber nodes, magazine feel
+   SPECIMEN PLATE — ink panel, scan-lines, mono data header
    ════════════════════════════════════════════════════════ */
-const Timeline = ({ data }: { data: any }) => (
-  <Box position="relative" pl={{ base: 8, md: 10 }}>
-    {/* the spine */}
+const SpecimenPlate = ({
+  code,
+  index,
+  total,
+  heading,
+  marker,
+  details,
+}: {
+  code: string;
+  index: number;
+  total: number;
+  heading: string;
+  marker?: string;
+  details?: any[];
+}) => {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
     <Box
-      position="absolute"
-      left={{ base: "9px", md: "11px" }}
-      top="8px"
-      bottom="8px"
-      w="2px"
-      bg="blackAlpha.150"
-    />
+      position="relative"
+      borderRadius="xl"
+      overflow="hidden"
+      bg={INK}
+      color="white"
+      border="1px solid"
+      borderColor="blackAlpha.400"
+      transition="all 0.2s ease"
+      _hover={{
+        transform: "translateY(-3px)",
+        boxShadow: "0 18px 36px -18px rgba(14,42,46,0.7)",
+      }}
+    >
+      {/* scan-line overlay */}
+      <Box
+        position="absolute"
+        inset={0}
+        bg={SCANLINES}
+        pointerEvents="none"
+        opacity={0.6}
+      />
+      {/* amber corner crosshair */}
+      <Box
+        position="absolute"
+        top="10px"
+        right="10px"
+        w="14px"
+        h="14px"
+        pointerEvents="none"
+      >
+        <Box position="absolute" top="6px" left={0} right={0} h="1px" bg={AMBER} opacity={0.8} />
+        <Box position="absolute" left="6px" top={0} bottom={0} w="1px" bg={AMBER} opacity={0.8} />
+      </Box>
 
-    <For each={data.items}>
-      {(item: any, idx: number) => (
-        <Box key={idx} position="relative" mb={idx === data.items.length - 1 ? 0 : 10}>
-          {/* node */}
-          <Box
-            position="absolute"
-            left={{ base: "-31px", md: "-39px" }}
-            top="6px"
-            w="20px"
-            h="20px"
-            borderRadius="full"
-            bg="white"
-            border="3px solid"
-            borderColor={AMBER}
-            boxShadow="0 0 0 4px white, 0 4px 10px -2px rgba(14,42,46,0.25)"
-          />
+      {/* mono data header strip */}
+      <Flex
+        position="relative"
+        align="center"
+        justify="space-between"
+        px={4}
+        py={2}
+        borderBottom="1px solid"
+        borderColor="whiteAlpha.200"
+        bg={INK2}
+        fontFamily={MONO}
+        fontSize="10px"
+        letterSpacing="0.08em"
+        color="whiteAlpha.700"
+      >
+        <Text>
+          {code}-{pad(index)} / {pad(total)}
+        </Text>
+        {marker && <Text color={AMBER}>{marker}</Text>}
+      </Flex>
 
-          {/* big year marker */}
-          {(item.year || item.date || item.period) && (
-            <Text
-              fontSize={{ base: "xs", md: "13px" }}
-              fontWeight="bold"
-              textTransform="uppercase"
-              letterSpacing="0.14em"
-              color={AMBER}
-              mb={1.5}
-            >
-              {item.year || item.date || item.period}
-            </Text>
-          )}
+      {/* body */}
+      <Box position="relative" p={5}>
+        <Heading as="h4" size="md" color="white" lineHeight="1.3" mb={3}>
+          {heading}
+        </Heading>
 
-          {/* entry */}
-          <Box
-            bg="white"
-            borderRadius="2xl"
-            borderWidth="1px"
-            borderColor="gray.100"
-            p={6}
-            transition="all 0.18s ease"
-            _hover={{
-              borderColor: AMBER,
-              boxShadow: "0 14px 30px -16px rgba(14,42,46,0.4)",
-            }}
-          >
-            <Heading as="h4" size="md" color={INK} mb={3} lineHeight="1.3">
-              <Box display={{ base: "inline", md: "none" }}>
-                {item.instshort || item.institution || item.title}
-              </Box>
-              <Box display={{ base: "none", md: "inline" }}>
-                {item.institution || item.title}
-              </Box>
-            </Heading>
-
-            <Box as="ul" listStyleType="none" m={0} p={0}>
-              <For each={item.details}>
-                {(detail: any, i: number) => (
-                  <Flex as="li" key={i} gap={2.5} mb={2} align="start">
-                    <Box
-                      mt="8px"
-                      w="5px"
-                      h="5px"
-                      borderRadius="full"
-                      bg={AMBER}
-                      flexShrink={0}
-                    />
-                    <Text fontSize="sm" color="gray.700" lineHeight="1.6">
-                      {detail}
-                    </Text>
-                  </Flex>
-                )}
-              </For>
-            </Box>
-          </Box>
-        </Box>
-      )}
-    </For>
-  </Box>
-);
-
-/* ════════════════════════════════════════════════════════
-   CARD GRID — for non-chronological sections
-   ════════════════════════════════════════════════════════ */
-const CardGrid = ({ data }: { data: any }) => (
-  <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
-    <For each={data.items}>
-      {(item: any, idx: number) => (
-        <Box
-          key={idx}
-          position="relative"
-          bg="white"
-          borderRadius="2xl"
-          borderWidth="1px"
-          borderColor="gray.100"
-          p={6}
-          overflow="hidden"
-          transition="all 0.18s ease"
-          _hover={{
-            borderColor: AMBER,
-            boxShadow: "0 14px 30px -16px rgba(14,42,46,0.4)",
-            transform: "translateY(-2px)",
-          }}
-        >
-          {/* amber corner accent */}
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            w="3px"
-            h="100%"
-            bg={AMBER}
-            opacity={0.0}
-            transition="opacity 0.18s ease"
-            _groupHover={{ opacity: 1 }}
-          />
-          <Flex justify="space-between" align="start" gap={3} mb={3}>
-            <Heading as="h4" size="md" color={INK} lineHeight="1.3">
-              {item.institution || item.title || item.name}
-            </Heading>
-            {(item.year || item.date || item.period) && (
-              <Box
-                flexShrink={0}
-                px={2.5}
-                py={1}
-                borderRadius="full"
-                bg={INK}
-                color="white"
-                fontSize="11px"
-                fontWeight="bold"
-              >
-                {item.year || item.date || item.period}
-              </Box>
+        <Box as="ul" listStyleType="none" m={0} p={0}>
+          <For each={details || []}>
+            {(detail: any, i: number) => (
+              <Flex as="li" key={i} gap={2.5} mb={2} align="start">
+                <Text
+                  fontFamily={MONO}
+                  fontSize="10px"
+                  color={AMBER}
+                  mt="3px"
+                  flexShrink={0}
+                >
+                  ▸
+                </Text>
+                <Text fontSize="sm" color="whiteAlpha.850" lineHeight="1.55">
+                  {detail}
+                </Text>
+              </Flex>
             )}
-          </Flex>
-
-          <Box as="ul" listStyleType="none" m={0} p={0}>
-            <For each={item.details}>
-              {(detail: any, i: number) => (
-                <Flex as="li" key={i} gap={2} mb={1.5} align="start">
-                  <Box
-                    mt="7px"
-                    w="5px"
-                    h="5px"
-                    borderRadius="full"
-                    bg={AMBER}
-                    flexShrink={0}
-                  />
-                  <Text fontSize="sm" color="gray.700" lineHeight="1.55">
-                    {detail}
-                  </Text>
-                </Flex>
-              )}
-            </For>
-          </Box>
+          </For>
         </Box>
-      )}
-    </For>
-  </SimpleGrid>
-);
+      </Box>
+    </Box>
+  );
+};
 
 /* ════════════════════════════════════════════════════════
-   PUBLICATIONS — grouped numbered list
+   PUBLICATIONS — clinical readout list
    ════════════════════════════════════════════════════════ */
 const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
   const prefix = PREFIX[stub];
@@ -333,30 +307,38 @@ const PublicationList = ({ data, stub }: { data: any; stub: string }) => {
         return (
           <Box key={year} mb={6}>
             <Text
-              fontSize="xs"
+              fontFamily={MONO}
+              fontSize="11px"
               fontWeight="bold"
-              textTransform="uppercase"
-              letterSpacing="0.14em"
+              letterSpacing="0.12em"
               color="gray.400"
               mb={3}
             >
-              {year}
+              ── {year}
             </Text>
             <Box display="flex" flexDirection="column" gap={3}>
               {yearItems.map((item: any, idx: number) => (
                 <Flex
                   key={idx}
                   bg="white"
-                  borderRadius="xl"
+                  borderRadius="lg"
                   borderWidth="1px"
                   borderColor="gray.100"
+                  borderLeft="3px solid"
+                  borderLeftColor={AMBER}
                   p={4}
                   gap={3}
                   align="start"
-                  transition="border-color 0.15s ease"
-                  _hover={{ borderColor: AMBER }}
+                  transition="all 0.15s ease"
+                  _hover={{ borderColor: "gray.200", borderLeftColor: AMBER, boxShadow: "sm" }}
                 >
-                  <Box minW="2.8em" fontSize="sm" fontWeight="bold" color={AMBER}>
+                  <Box
+                    minW="3em"
+                    fontFamily={MONO}
+                    fontSize="sm"
+                    fontWeight="bold"
+                    color={INK}
+                  >
                     [{prefix}
                     {data.items.length - item._originalIndex}]
                   </Box>
