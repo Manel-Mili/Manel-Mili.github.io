@@ -27,7 +27,7 @@ Her research focuses on artificial intelligence and computer vision applied to m
 
 In 2025 she carried out a research internship at the U2IS laboratory of ENSTA Paris (Polytechnic Institute of Paris), working on mechanistic interpretability applied to multimodal data for MGMT status prediction. Alongside her research she has taught data science, statistical programming, web services, databases, and cloud computing as a contract and adjunct lecturer at FSM and ISIMM.`;
 
-  const bioFrench = `Manel Mili est doctorante à la Faculté des Sciences de Monastir et membre du Laboratoire de Technologies et Imagerie Médicale (LTIM, LR12ES06) à la Faculté de Médecine de l'Université de Monastir, en Tunisie. Sa thèse porte sur la prédiction du statut MGMT dans les gliomes à l'aide de l'intelligence artificielle.
+  const bioFrench = `Manel Mili est doctorante à la Faculté des Sciences de Monastir et membre du Laboratoire de Technologies et Imagerie Médicale (LTIM-LR12ES06) à la Faculté de Médecine de l'Université de Monastir, en Tunisie. Sa thèse porte sur la prédiction du statut MGMT dans les gliomes à l'aide de l'intelligence artificielle.
 
 Ses recherches portent sur l'intelligence artificielle et la vision par ordinateur appliquées au traitement d'images médicales. Elle est spécialisée dans la modélisation prédictive, la classification et la fouille de données, avec une solide expertise en apprentissage profond, apprentissage automatique et visualisation de données.
 
