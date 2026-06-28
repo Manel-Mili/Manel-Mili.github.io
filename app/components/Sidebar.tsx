@@ -172,17 +172,30 @@ export default function Sidebar() {
         <SectionLabel>Contact</SectionLabel>
 
         <VStack gap={1} align="center">
-          <Link
-            href="mailto:manel.mili@isimm.u-monastir.tn"
-            fontSize="sm"
-            fontWeight="semibold"
-            color={INK}
-            _hover={{ color: AMBER }}
-          >
-            manel.mili@isimm.u-monastir.tn
-            milimanel62@gmail.com
-          </Link>
-        </VStack>
+        <Link
+          href="mailto:manel.mili@isimm.u-monastir.tn"
+          fontSize="sm"
+          fontWeight="semibold"
+          color={INK}
+          _hover={{ color: AMBER }}
+        >
+          manel.mili@isimm.u-monastir.tn
+        </Link>
+      
+        <Link
+          href="mailto:milimanel62@gmail.com"
+          fontSize="sm"
+          fontWeight="semibold"
+          color={INK}
+          _hover={{ color: AMBER }}
+        >
+          milimanel62@gmail.com
+        </Link>
+      </VStack>
+
+
+
+        
 
         {/* CV button */}
         <Link
