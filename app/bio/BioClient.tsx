@@ -21,17 +21,25 @@ export default function BioPage() {
   const [copiedEn, setCopiedEn] = useState(false);
   const [copiedFr, setCopiedFr] = useState(false);
 
-  const bioEnglish = `Manel Mili is a Ph.D. student at the Faculty of Sciences of Monastir and a member of the Laboratory of Medical Technologies and Imaging (LTIM-LR12ES06) at the Faculty of Medicine, University of Monastir, Tunisia. Her doctoral thesis addresses the prediction of MGMT status in gliomas using artificial intelligence.
+  const bioEnglish = `Hi, I'm Manel Mili, a Ph.D. candidate in Artificial Intelligence and Medical Imaging at the University of Monastir, Tunisia, and a researcher at the Laboratory of Medical Technologies and Imaging (LTIM).
 
-Her research focuses on artificial intelligence and computer vision applied to medical image processing. She specializes in predictive modeling, classification, and data mining, with strong expertise in deep learning, machine learning, and data visualization. Passionate about innovative problem-solving, she strives to advance methodologies that enhance decision-making and drive impactful results in research.
+My work lies at the intersection of artificial intelligence, computer vision, and healthcare, where I develop intelligent systems capable of transforming complex medical data into meaningful clinical insights. My current research focuses on predicting MGMT promoter methylation status in gliomas using multimodal AI models, with a particular interest in explainable and trustworthy artificial intelligence.
 
-In 2025 she carried out a research internship at the U2IS laboratory of ENSTA Paris (Polytechnic Institute of Paris), working on mechanistic interpretability applied to multimodal data for MGMT status prediction. Alongside her research she has taught data science, statistical programming, web services, databases, and cloud computing as a contract and adjunct lecturer at FSM and ISIMM.`;
+Beyond building accurate models, I am passionate about understanding why they make their decisions. This curiosity led me to conduct a research internship at U2IS – ENSTA Paris (Institut Polytechnique de Paris), where I explored mechanistic interpretability for multimodal medical AI.
 
-  const bioFrench = `Manel Mili est doctorante à la Faculté des Sciences de Monastir et membre du Laboratoire de Technologies et Imagerie Médicale (LTIM-LR12ES06) à la Faculté de Médecine de l'Université de Monastir, en Tunisie. Sa thèse porte sur la prédiction du statut MGMT dans les gliomes à l'aide de l'intelligence artificielle.
+Alongside my research, I enjoy sharing knowledge through teaching, mentoring, and collaborating with multidisciplinary teams. Over the years, I have taught courses in data science, machine learning, databases, cloud computing, and software engineering while contributing to international research projects and scientific publications.
 
-Ses recherches portent sur l'intelligence artificielle et la vision par ordinateur appliquées au traitement d'images médicales. Elle est spécialisée dans la modélisation prédictive, la classification et la fouille de données, avec une solide expertise en apprentissage profond, apprentissage automatique et visualisation de données.
+I believe that the future of artificial intelligence is not only about creating smarter algorithms but also about building systems that are transparent, reliable, and capable of making a real impact on people's lives. Whether I'm developing new deep learning models, exploring explainable AI, or working with medical experts, my goal remains the same: to bridge cutting-edge AI research with meaningful healthcare innovation.`;
 
-En 2025, elle a effectué un stage de recherche au laboratoire U2IS de l'ENSTA Paris (Institut Polytechnique de Paris), portant sur l'interprétabilité mécaniste appliquée aux données multimodales pour la prédiction du statut MGMT. En parallèle de ses recherches, elle enseigne en tant que vacataire à la FSM et à l'ISIMM.`;
+  const bioFrench = `Bonjour, je suis Manel Mili, doctorante en intelligence artificielle et imagerie médicale à l'Université de Monastir (Tunisie) et membre du Laboratoire de Technologies et d'Imagerie Médicale (LTIM).
+
+Mes recherches se situent à l'intersection de l'intelligence artificielle, de la vision par ordinateur et de la santé, avec pour objectif de développer des solutions capables d'extraire des informations pertinentes à partir de données médicales complexes. Ma thèse porte sur la prédiction du statut de méthylation du promoteur MGMT dans les gliomes grâce à des approches d'intelligence artificielle multimodales, en accordant une attention particulière à l'IA explicable et digne de confiance.
+
+Au-delà des performances des modèles, je cherche à comprendre comment et pourquoi ils prennent leurs décisions. Cette démarche m'a conduite à effectuer un stage de recherche au laboratoire U2IS de l'ENSTA Paris (Institut Polytechnique de Paris), où j'ai travaillé sur l'interprétabilité mécaniste appliquée à l'intelligence artificielle multimodale.
+
+En parallèle de mes activités de recherche, j'aime transmettre mes connaissances à travers l'enseignement, l'encadrement et les collaborations scientifiques. J'ai eu l'opportunité d'enseigner la science des données, l'apprentissage automatique, les bases de données, le cloud computing et le génie logiciel, tout en contribuant à plusieurs publications scientifiques et projets de recherche internationaux.
+
+Je suis convaincue que l'avenir de l'intelligence artificielle ne repose pas uniquement sur des modèles plus performants, mais sur des systèmes fiables, explicables et utiles. Mon ambition est de faire le lien entre la recherche de pointe en IA et des applications concrètes capables d'améliorer les soins de santé et d'avoir un impact positif sur la vie des patients.`;
 
   const handleCopy = (text: string, lang: 'en' | 'fr') => {
     navigator.clipboard.writeText(text);
