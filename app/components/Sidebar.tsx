@@ -180,6 +180,7 @@ export default function Sidebar() {
             _hover={{ color: AMBER }}
           >
             manel.mili@isimm.u-monastir.tn
+            milimanel62@gmail.com
           </Link>
         </VStack>
 
