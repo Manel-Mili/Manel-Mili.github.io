@@ -181,9 +181,6 @@ export default function Sidebar() {
           >
             manel.mili@isimm.u-monastir.tn
           </Link>
-          <Text color="gray.500" fontSize="sm">
-            +216 58 621 270
-          </Text>
         </VStack>
 
         {/* CV button */}
