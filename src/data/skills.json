@@ -9,6 +9,13 @@
       ]
     },
     {
+      "institution": "Data Analytics & Business Intelligence",
+      "details": [
+        "Microsoft Power BI, DAX, Power Query, Data Modeling, KPI Development",
+        "Interactive Dashboards, Data Visualization, Time Intelligence, Business Analytics, Operational Performance Analysis"
+      ]
+    },
+    {
       "institution": "Programming",
       "details": [
         "Python, Java, R, SQL, MATLAB, Ruby, XML/XSL, LaTeX"
