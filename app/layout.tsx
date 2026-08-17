@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Ph.D. researcher in medical AI at LTIM, University of Monastir.",
   },
-  manifest: "/site.webmanifest",
+  };
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
